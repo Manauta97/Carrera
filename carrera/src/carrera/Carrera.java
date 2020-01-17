@@ -10,7 +10,7 @@ public class Carrera {
 
 	public Carrera(Coche[] vParticipantes, String nombreCarrera, double distancia) {
 
-		this.vParticipantes = new Coche[5];
+		this.vParticipantes = new Coche[10];
 		this.nombreCarrera = nombreCarrera;
 		this.distancia = distancia;
 	}
@@ -41,10 +41,8 @@ public class Carrera {
 
 	@Override
 	public String toString() {
-		return "Nombre de la carrera:" +nombreCarrera +" nº de participantes: "+ Arrays.toString(vParticipantes)
+		return "Nombre de la carrera:" + nombreCarrera + " nº de participantes: " + Arrays.toString(vParticipantes)
 				+ "distancia de la carrera " + distancia + "Km";
 	}
-	
-	
 
 }

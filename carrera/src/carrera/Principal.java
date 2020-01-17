@@ -21,9 +21,10 @@ public class Principal {
 		System.out.println("Distancia de la carrera");
 		distanciaCarrera = leer.nextDouble();
 
-		Coche c1 = new Coche(nombrePiloto, dorsal, distanciaCarrera);
-		
-		return c1;
+		Coche c = new Coche(nombrePiloto, dorsal, distanciaCarrera);
+
+		return c;
+
 	}
 
 	public static void jugar(Coche coche) {
@@ -44,14 +45,14 @@ public class Principal {
 				coche.rearrancar();
 				break;
 			}
-			
+
 		} while (coche.getKmRecoridos() <= coche.getDistanciaCarrera());
 	}
 
 	private static void imprimirSituacionCarrera(Coche c) {
 		System.out.println(c.toString());
 	}
-	
+
 	public static void main(String[] args) {
 		int opc = 0;
 		Coche coche = null;
@@ -66,7 +67,7 @@ public class Principal {
 					coche.arrancar();
 					jugar(coche);
 					System.out.println("carrera finalizada");
-					//Escribiremos el podium
+					// Escribiremos el podium
 				} else {
 					System.out.println("Carrera no configurada, necesitas introducir al jugador");
 				}
