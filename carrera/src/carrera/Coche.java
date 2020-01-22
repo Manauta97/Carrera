@@ -11,8 +11,9 @@ public class Coche {
 	private int potencia;
 	private double velocidad;
 	private double kmRecoridos;
+	private boolean bot;
 
-	public Coche(String nombrePiloto, int dorsal, double distanciaCarrera) {
+	public Coche(String nombrePiloto, int dorsal, double distanciaCarrera, boolean bot) {
 		this.nombrePiloto = nombrePiloto;
 		this.dorsal = dorsal;
 		this.distanciaCarrera = distanciaCarrera;
@@ -20,6 +21,7 @@ public class Coche {
 		this.potencia = 50;
 		this.velocidad = 0;
 		this.kmRecoridos = 0;
+		this.bot = bot;
 
 	}
 
@@ -91,6 +93,10 @@ public class Coche {
 		this.velocidad = velocidad;
 	}
 
+	public int getDorsal() {
+		return dorsal;
+	}
+	
 	@Override
 	public String toString() {
 		return "El piloto: " + nombrePiloto + " con el dorsal: " + dorsal + " lleva una velocidad de: " + getVelocidad()

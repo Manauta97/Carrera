@@ -4,28 +4,7 @@ import java.util.Scanner;
 
 public class Principal {
 
-	public static Coche crearCoche() {
-		Scanner leer = new Scanner(System.in);
-		String nombrePiloto = "";
-		int dorsal = 0;
-		double distanciaCarrera = 0;
 
-		System.out.println("Introduce el nombre del Piloto");
-		nombrePiloto = leer.nextLine();
-
-		leer = new Scanner(System.in);
-		System.out.println("Introduce el número de dorsal");
-		dorsal = leer.nextInt();
-
-		leer = new Scanner(System.in);
-		System.out.println("Distancia de la carrera");
-		distanciaCarrera = leer.nextDouble();
-
-		Coche c = new Coche(nombrePiloto, dorsal, distanciaCarrera);
-
-		return c;
-
-	}
 
 	public static void jugar(Coche coche) {
 		int opc = 0;
@@ -54,8 +33,19 @@ public class Principal {
 	}
 
 	public static void main(String[] args) {
+		Scanner leer = new Scanner(System.in);
+		
 		int opc = 0;
-		Coche coche = null;
+		String nombreCarrera;
+		double distancia;
+		
+		System.out.println("Nombre de la carrera");
+		nombreCarrera = leer.nextLine();
+		leer = new Scanner(System.in);
+		System.out.println("Distancia de la carrera");
+		distancia = leer.nextDouble();
+		
+		Carrera carrera = new Carrera(nombreCarrera, distancia);
 
 		Menu menu = new Menu();
 
@@ -63,23 +53,17 @@ public class Principal {
 			opc = menu.menuJugador();
 			switch (opc) {
 			case 1:
-				if (coche != null) {
-					coche.arrancar();
-					jugar(coche);
-					System.out.println("carrera finalizada");
-					// Escribiremos el podium
-				} else {
-					System.out.println("Carrera no configurada, necesitas introducir al jugador");
+				if (carrera.isConfigurada()) {
+					//carrera.jugar();
+				}else {
+					System.out.println("Carrera sin configurar");
 				}
-				break;
+				
 			case 2:
-				coche = crearCoche();
+				carrera.configurarCarrera();
 				break;
 			case 3:
 				System.out.println("Has salido del juego");
-				break;
-
-			default:
 				break;
 			}
 		} while (opc != 3);

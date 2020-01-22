@@ -62,4 +62,35 @@ public class Menu {
 		} while (!bandera);
 		return opc;
 	}
+	
+	public int menuCreacionJugador() {
+
+		Scanner leer = new Scanner(System.in);
+		int opc = 0;
+		boolean bandera = true;
+
+		do {
+
+			try {
+				do {
+					leer = new Scanner(System.in);
+					System.out.println("1. Crear jugador humano");
+					System.out.println("2. Crear bot");
+					System.out.println("3. volver a menu principal");
+					opc = leer.nextInt();
+					bandera = true;
+
+				} while (opc < 1 || opc > 3);
+
+			} catch (NullPointerException e) {
+				System.out.println("datos mal introducidos");
+				bandera = false;
+			} catch (Exception e) {
+				System.out.println("datos mal introducidos");
+				bandera = false;
+			}
+		} while (!bandera);
+		return opc;
+	}
+	
 }
