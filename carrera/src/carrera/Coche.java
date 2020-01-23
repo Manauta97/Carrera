@@ -96,11 +96,27 @@ public class Coche {
 	public int getDorsal() {
 		return dorsal;
 	}
-	
+
+	public String getEstado() {
+		return estado;
+	}
+
+	public void setEstado(String estado) {
+		this.estado = estado;
+	}
+
 	@Override
 	public String toString() {
 		return "El piloto: " + nombrePiloto + " con el dorsal: " + dorsal + " lleva una velocidad de: " + getVelocidad()
 				+ " llevando recorridos: " + kmRecoridos + "Km";
+	}
+
+	public boolean getBot() {
+		return bot;
+	}
+
+	public void setBot(boolean bot) {
+		this.bot = bot;
 	}
 
 }

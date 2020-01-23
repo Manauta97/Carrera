@@ -62,7 +62,7 @@ public class Menu {
 		} while (!bandera);
 		return opc;
 	}
-	
+
 	public int menuCreacionJugador() {
 
 		Scanner leer = new Scanner(System.in);
@@ -92,5 +92,5 @@ public class Menu {
 		} while (!bandera);
 		return opc;
 	}
-	
+
 }

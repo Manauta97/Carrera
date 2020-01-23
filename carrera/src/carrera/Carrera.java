@@ -7,6 +7,7 @@ import java.util.Scanner;
 public class Carrera {
 
 	private Coche[] vParticipantes;
+	private Coche[] podium;
 	private String nombreCarrera;
 	private double distancia;
 
@@ -71,7 +72,7 @@ public class Carrera {
 
 		for (int i = 0; i < vParticipantes.length; i++) {
 			if (vParticipantes[i] == null) {
-
+				bandera = false;
 				leer = new Scanner(System.in);
 				System.out.println("Nombre del piloto");
 				nombrePiloto = leer.nextLine();
@@ -84,43 +85,55 @@ public class Carrera {
 				} while (comprobarDorsal(dorsal));
 				// compruebo que no este
 				Coche c = new Coche(nombrePiloto, dorsal, this.distancia, false);
+				vParticipantes[i] = c;
 				break;
 			}
 		}
+		if (bandera) {
+			System.out.println("No hay más huecos");
+		}
 
 	}
-	
+
 	public void añadirPilotoBot() {
 		String nombrePiloto = "";
 		int dorsal = 0;
 		boolean bandera = true;
+
 		Random r = new Random();
 		for (int i = 0; i < vParticipantes.length; i++) {
 			if (vParticipantes[i] == null) {
 
+				bandera = false;
+
 				nombrePiloto = "Bot " + i;
 
 				do {
-					
+
 					dorsal = r.nextInt(20);
 				} while (comprobarDorsal(dorsal));
 				// compruebo que no este
 				Coche c = new Coche(nombrePiloto, dorsal, this.distancia, true);
+				vParticipantes[i] = c;
 				break;
 			}
 		}
 
-	}
-	
-	
-	
-	public boolean comprobarDorsal(int dorsal) {
-		
-		for (Coche coche : vParticipantes) {
-			if (coche!=null && coche.getDorsal() == dorsal)
-				return true;
+		if (bandera) {
+			System.out.println("No hay más huecos");
 		}
-	
+
+	}
+
+	public boolean comprobarDorsal(int dorsal) {
+
+		for (Coche coche : vParticipantes) {
+			if (coche != null && coche.getDorsal() == dorsal) {
+				System.out.println("Dorsal repetido");
+				return true;
+			}
+		}
+
 		return false;
 	}
 
@@ -139,11 +152,107 @@ public class Carrera {
 				añadirPilotoBot();
 				break;
 			case 3:
-				menu.menuJugador();
+				System.out.println("Fin de configuración");
 				break;
 			}
-		}while(opc != 3);
-		
+		} while (opc != 3);
+
 	}
-	
+
+	private void subirCochePodium(Coche coche) {
+
+		for (int i = 0; i < vParticipantes.length; i++) {
+
+			if (coche != null && coche.getEstado().equalsIgnoreCase("terminado")) {
+				podium[i] = coche;
+				System.out.println("el participante " + i + "ha terminado " + i + "º posición");
+			}
+		}
+	}
+
+	public void jugar() {
+
+		int opc = 0;
+		Menu menu = new Menu();
+		Coche coche;
+
+		Random r = new Random();
+		int accionBot;
+
+		arrancarTodosCoches();
+		do {
+
+			for (int i = 0; i < vParticipantes.length; i++) {
+				if (vParticipantes[i] != null) {
+					coche = vParticipantes[i];
+				} else {
+					continue; // Saltamos a la siguiente posicion del vector
+				}
+
+				if (!coche.getBot()) {
+					if (coche.getEstado().equalsIgnoreCase("terminado")) {
+						System.out.println("el coche ha terminado");
+					} else {
+						imprimirSituacionCarrera(coche);
+						opc = menu.menuCarrera();
+						switch (opc) {
+						case 1:
+							coche.acelerar();
+							break;
+						case 2:
+							coche.frenar();
+							break;
+						case 3:
+							coche.rearrancar();
+							break;
+						}
+						subirCochePodium(coche);
+					}
+
+				} else {
+					imprimirSituacionCarrera(coche);
+					if (coche.getEstado() == "accidentado") {
+						coche.rearrancar();
+					} else {
+						accionBot = r.nextInt(2);
+						if (accionBot == 1) {
+							coche.acelerar();
+						} else {
+							coche.frenar();
+						}
+					}
+
+				}
+
+			}
+		} while (!juegoTerminado());
+	}
+
+	private void arrancarTodosCoches() {
+
+		for (int i = 0; i < vParticipantes.length; i++) {
+			if (vParticipantes[i] != null) {
+				vParticipantes[i].arrancar();
+			}
+		}
+
+	}
+
+	private boolean juegoTerminado() {
+		boolean bandera = true;
+
+		for (Coche coche : vParticipantes) {
+			if (coche != null && coche.getEstado().equalsIgnoreCase("marcha")) {
+				bandera = false;
+			}
+
+		}
+
+		return bandera;
+	}
+
+	private void imprimirSituacionCarrera(Coche c) {
+		System.out.println(c.toString());
+	}
+
 }
