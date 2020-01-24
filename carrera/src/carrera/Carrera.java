@@ -14,6 +14,7 @@ public class Carrera {
 	public Carrera(String nombreCarrera, double distancia) {
 
 		this.vParticipantes = new Coche[5];
+		this.podium = new Coche[5];
 		this.nombreCarrera = nombreCarrera;
 		this.distancia = distancia;
 	}
@@ -161,13 +162,42 @@ public class Carrera {
 
 	private void subirCochePodium(Coche coche) {
 
+		if (coche != null && coche.getEstado().equalsIgnoreCase("terminado")) {
+			for (int i = 0; i < podium.length; i++) {
+				if (podium[i] == null) {
+					podium[i] = coche;
+					break;
+				}
+
+			}
+
+			System.out.println("el participante con el dorsal " + coche.getDorsal() + " ha terminado");
+
+		}
+
+	}
+
+	private boolean puedeRearrancar(Coche coche) { // comprobar
+
 		for (int i = 0; i < vParticipantes.length; i++) {
 
-			if (coche != null && coche.getEstado().equalsIgnoreCase("terminado")) {
-				podium[i] = coche;
-				System.out.println("el participante " + i + "ha terminado " + i + "º posición");
+			if (coche != null && coche.getEstado() == "terminado") {
+				return false;
 			}
 		}
+
+		return true;
+	}
+
+	private void mostrarPodium() {
+		int cont = 1;
+		for (Coche coche : podium) {
+			if (coche != null && coche.getEstado() == "terminado") {
+				System.out.println("Clasificado " + cont + "º " + coche.getNombrePiloto());
+				cont++;
+			}
+		}
+
 	}
 
 	public void jugar() {
@@ -191,34 +221,44 @@ public class Carrera {
 
 				if (!coche.getBot()) {
 					if (coche.getEstado().equalsIgnoreCase("terminado")) {
-						System.out.println("el coche ha terminado");
+						System.out.println("el participante con el dorsal " + coche.getDorsal() + " ha terminado");
 					} else {
 						imprimirSituacionCarrera(coche);
 						opc = menu.menuCarrera();
 						switch (opc) {
 						case 1:
 							coche.acelerar();
+							subirCochePodium(coche);
 							break;
 						case 2:
 							coche.frenar();
+							subirCochePodium(coche);
 							break;
 						case 3:
-							coche.rearrancar();
+							if (puedeRearrancar(coche)) {
+								coche.rearrancar();
+							} else {
+								System.out.println("No se puede rearrancar, hay un ganador");
+							}
+
 							break;
 						}
-						subirCochePodium(coche);
+
 					}
 
 				} else {
 					imprimirSituacionCarrera(coche);
-					if (coche.getEstado() == "accidentado") {
+					if (coche.getEstado() == "accidentado" && puedeRearrancar(coche)) {
 						coche.rearrancar();
 					} else {
 						accionBot = r.nextInt(2);
 						if (accionBot == 1) {
 							coche.acelerar();
+							subirCochePodium(coche);
+
 						} else {
 							coche.frenar();
+							subirCochePodium(coche);
 						}
 					}
 
@@ -226,6 +266,8 @@ public class Carrera {
 
 			}
 		} while (!juegoTerminado());
+
+		mostrarPodium();
 	}
 
 	private void arrancarTodosCoches() {
@@ -235,20 +277,24 @@ public class Carrera {
 				vParticipantes[i].arrancar();
 			}
 		}
-
 	}
 
 	private boolean juegoTerminado() {
-		boolean bandera = true;
 
 		for (Coche coche : vParticipantes) {
 			if (coche != null && coche.getEstado().equalsIgnoreCase("marcha")) {
-				bandera = false;
+				return false;
 			}
-
 		}
 
-		return bandera;
+		for (Coche coche : vParticipantes) {
+			if (coche != null && coche.getEstado().equalsIgnoreCase("terminado")) {
+				return true;
+			}
+		}
+
+		return false;
+
 	}
 
 	private void imprimirSituacionCarrera(Coche c) {

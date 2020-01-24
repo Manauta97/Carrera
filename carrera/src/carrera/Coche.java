@@ -41,6 +41,9 @@ public class Coche {
 		} else {
 			velocidad += acelerar;
 			kmRecoridos += acelerar;
+			if (kmRecoridos >= distanciaCarrera) {
+				this.estado = "terminado";
+			}
 		}
 	}
 
@@ -103,6 +106,10 @@ public class Coche {
 
 	public void setEstado(String estado) {
 		this.estado = estado;
+	}
+	
+	public String getNombrePiloto() {
+		return nombrePiloto;
 	}
 
 	@Override
