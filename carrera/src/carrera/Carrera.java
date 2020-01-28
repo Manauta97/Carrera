@@ -137,6 +137,17 @@ public class Carrera {
 
 		return false;
 	}
+	
+	public boolean comprobarDorsalPodium(int dorsal) {
+
+		for (Coche coche : podium) {
+			if (coche != null && coche.getDorsal() == dorsal) {
+				return true;
+			}
+		}
+
+		return false;
+	}
 
 	public void configurarCarrera() {
 		Scanner leer = new Scanner(System.in);
@@ -163,21 +174,22 @@ public class Carrera {
 	private void subirCochePodium(Coche coche) {
 
 		if (coche != null && coche.getEstado().equalsIgnoreCase("terminado")) {
-			for (int i = 0; i < podium.length; i++) {
-				if (podium[i] == null) {
-					podium[i] = coche;
-					break;
+
+			if (!comprobarDorsalPodium(coche.getDorsal())) {
+
+				for (int i = 0; i < podium.length; i++) {
+					if (podium[i] == null) {
+						podium[i] = coche;
+						break;
+					}
+
 				}
 
 			}
-
-			System.out.println("el participante con el dorsal " + coche.getDorsal() + " ha terminado");
-
 		}
-
 	}
 
-	private boolean puedeRearrancar(Coche coche) { // comprobar
+	private boolean puedeRearrancar(Coche coche) {
 
 		for (int i = 0; i < vParticipantes.length; i++) {
 
@@ -222,6 +234,7 @@ public class Carrera {
 				if (!coche.getBot()) {
 					if (coche.getEstado().equalsIgnoreCase("terminado")) {
 						System.out.println("el participante con el dorsal " + coche.getDorsal() + " ha terminado");
+						System.out.println("");
 					} else {
 						imprimirSituacionCarrera(coche);
 						opc = menu.menuCarrera();
@@ -298,7 +311,17 @@ public class Carrera {
 	}
 
 	private void imprimirSituacionCarrera(Coche c) {
-		System.out.println(c.toString());
-	}
 
+		for (int i = 0; i < vParticipantes.length; i++) {
+			if (vParticipantes[i] != null) {
+				System.out.print("o---o");
+				for (int j = 0; j < getDistancia(); j++) {
+					System.out.print(".");
+				}
+				System.out.print("|] Meta");
+				System.out.println("");
+				System.out.println("");
+			}
+		}
+	}
 }

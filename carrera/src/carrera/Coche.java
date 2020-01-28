@@ -35,7 +35,7 @@ public class Coche {
 		Random r = new Random();
 		double acelerar = r.nextInt(potencia + 1);
 
-		if ((acelerar + velocidad) > 200) {
+		if ((acelerar + velocidad) >= 200) {
 			estado = "accidentado";
 			velocidad = 0;
 		} else {
@@ -45,6 +45,24 @@ public class Coche {
 				this.estado = "terminado";
 			}
 		}
+	}
+
+	public void acelerarTest(double vel) {
+
+		Random r = new Random();
+		double acelerar = vel;
+
+		if ((acelerar + velocidad) >= 200) {
+			estado = "accidentado";
+			velocidad = 0;
+		} else {
+			velocidad += acelerar;
+			kmRecoridos += acelerar;
+			if (kmRecoridos >= distanciaCarrera) {
+				this.estado = "terminado";
+			}
+		}
+
 	}
 
 	public void frenar() {
@@ -107,7 +125,7 @@ public class Coche {
 	public void setEstado(String estado) {
 		this.estado = estado;
 	}
-	
+
 	public String getNombrePiloto() {
 		return nombrePiloto;
 	}
